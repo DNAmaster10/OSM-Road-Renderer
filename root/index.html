@@ -8,12 +8,20 @@
         <div id="page_container">
             <h1>OSM Road Test</h1>
             <p>Hello there!</p>
-            <p>To test this software, start by entering in an OSM URL into the box below to see it render on the canvas: </p><br>
+            <p>To test this program, start by pasting a link to OSM of the area you would like to see into the box below to see it render on the canvas. </p><br>
             <input type="text" placeholder="OSM Url" id="url_input_box">
             <button onclick="parseOSMUrl()">Parse URL</button>
             <p id="error_output"></p>
 
             <canvas id="map_canvas" width="800" height="800"></canvas>
+
+            <h3>Examples and explanation</h3>
+            <p>This project is supposed to demonstrate one potential method for drawing area:highway in OpenStreetMap. The issue, unfortunately, becomes rather complex when you take into account the numerous scenarios where road areas could be drawn, e.g. in complex intersections.</p>
+            <p>My solution is to first group features into 'buckets' based on the layer=* tag, and rendering each layer separately. The same rendering logic is applied to each visible layer: Draw the ground, then the roads, then the buildings, etc. The division into buckets beforehand allows for roads to be drawn over one another.</p>
+            <p>The other critical choice I have made is to always draw highway=* ways over area:highway=* areas within any given layer. This means that the default outcome for the vast majority of places, where there will only be a single highway=* and area:highway=* feature overlapping, will render correctly.</p>
+            <p>This approach may not work as well with existing renderers which do not sort using layer beforehand. The solution in those scenarios is tricky, and may require drawing all road areas overlapping followed by all highway lines in two sweeps. It would look worse, but would still function most of the time.</p>
+            <p>Lastly, sorting features beforehand also allows for other features, such as drawing all road lines above all road areas (easier for navigation), disabling one or the other, etc.</p>
+            <h4>Tl:DR Always draw highway=* ways over area:highway=* within any given layer.</h4>
         </div>
     </body>
 </html>
